@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Website</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h2>Shopping Cart</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <!-- Cart items will be displayed here -->
+            </tbody>
+        </table>
+
+        <div class="row justify-content-end">
+            <div class="col-md-4">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <td>Subtotal</td>
+                            <td id="ftotal">3500.00</td>
+
+                        </tr>
+                        <tr>
+                            <td>Tax</td>
+                            <td>₹15.00</td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td>₹3515.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-primary btn-block">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const totalPriceElement = document.getElementById('totalPrice');
+        const tbody = document.getElementById('tbody');
+
+        function show() {
+            var cartget = JSON.parse(localStorage.getItem("getid"));
+            tbody.innerHTML = '';
+
+            cartget.forEach(element => {
+                var carturl = `https://dummyjson.com/products/${element}`;
+                fetch(carturl)
+                    .then((v) => v.json())
+                    .then((v) => {
+                        var products = v;
+
+                        tbody.innerHTML += ` <tr>
+                            <td>
+                                <div class="media">
+                                    <img src="${products.thumbnail}" class="mr-3" alt="Product Image" width="80">
+                                    <div class="media-body">
+                                        <h5 class="mt-0">${products.title}</h5>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="productprice">${products.price}</td>
+                            <td>
+                                <input type="number" onchange="count()" class="count" value="1" min="1" class="form-control">
+                            </td>
+                            <td><input class="form-control totalPrice" value="${products.price}"></input></td>
+                            <td>
+                                <button class="btn btn-danger" onclick="removefunction(${products.id})">Remove</button>
+                            </td>
+                        </tr>`;
+                    });
+            });
+        }
+
+        show();
+
+        function removefunction(id) {
+            var cartget = JSON.parse(localStorage.getItem("getid"));
+
+            var index = cartget.indexOf(id);
+
+            if (index >= 0) {
+                cartget.splice(index, 1);
+                localStorage.setItem("getid", JSON.stringify(cartget));
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Item Removed',
+                    text: 'This product has been removed from your cart.',
+                });
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Product not found in the cart.',
+                    text: 'This product has been removed from your cart.',
+                });
+            }
+
+            show();
+        }
+
+
+        function count() {
+            var countInputs = document.querySelectorAll('.count');
+            var totalPriceElements = document.querySelectorAll('.totalPrice');
+            var productPrices = document.querySelectorAll('.productprice');
+
+
+            var finaltotal = document.querySelector('#ftotal');
+           
+         
+
+
+            for (let i = 0; i < countInputs.length; i++) {
+                var countInput = countInputs[i];
+                var totalPriceElement = totalPriceElements[i];
+                var productPrice = productPrices[i];
+
+                var num = Number(countInput.value);
+                var price = Number(productPrice.innerText);
+                var tot = price * num;
+                totalPriceElement.value = tot;
+              
+                console.log (finaltotal.innerText)
+
+            }
+          
+        }
+    </script>
+</body>
+
+</html>

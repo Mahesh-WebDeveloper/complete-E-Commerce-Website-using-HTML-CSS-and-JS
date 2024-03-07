@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <style>
+        body {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .img4 img {
+            width: 100%;
+            height: 60px;
+        }
+
+        .category-panel {
+            background-color: #fff;
+            border: 1px solid #e1e1e1;
+            border-radius: 4px;
+            padding: 15px;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12);
+        }
+
+        .category-panel h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .category-panel .form-check {
+            margin-bottom: 15px;
+        }
+
+        .category-panel .form-check-input {
+            margin-right: 5px;
+        }
+
+        .product-card {
+            border: 1px solid #e1e1e1;
+            border-radius: 4px;
+            background-color: #fff;
+            margin: 10px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .product-card img {
+            max-width: 100%;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card .card-title {
+            font-size: 18px;
+        }
+
+        .filter-label {
+            font-weight: bold;
+        }
+
+        .card img {
+            height: 200px;
+        }
+
+        .catgeroydivall {
+            height: auto;
+        }
+
+        .pagg {
+            text-align: center !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary ">
+        <div class="container">
+            <a class="navbar-brand text-white" href="#">Online Store</a>
+            <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto mt-2">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="cart.html" target="_blank"><i
+                                class="fas fa-shopping-cart"></i> Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#"><i class="fas fa-heart"></i> Wishlist</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    <div class="container-fluid">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="bodymod"></div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <h1 class="mt-3 text-center mb-4">Online Store</h1>
+            <div class="row">
+                <div class="col-lg-3 category-panel">
+                    <div class="catgeroydivall">
+                        <h3><i class="fas fa-tags"></i> Categories</h3>
+                        <div class="catsectiono">
+                      
+                        </div>
+
+                        <h3><i class="fas fa-palette"></i> Color</h3>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="redColor">
+                            <label class="form-check-label" for="redColor">Red</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="blueColor">
+                            <label class="form-check-label" for="blueColor">Blue</label>
+                        </div>
+                        <!-- Add more color options as needed -->
+
+                        <h3><i class="fas fa-star"></i> Rating</h3>
+                        <select class="form-control" name="" id="selct">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <!-- Add more rating options as needed -->
+
+                        <h3><i class="fas fa-dollar-sign"></i> Price</h3>
+                        <label for="priceRange" class="filter-label">Price Range:</label>
+                        <input type="range" value="" class="form-range" id="priceRange">
+
+                        <div class="row d-flex">
+                            <p class=" col fw-bold m-0 filter-label">Min: <span id="change"></span></p>
+                            <p class=" col fw-bold m-0 filter-label">Max: <span id="maxPrice">$1000</span></p>
+                        </div>
+
+
+
+
+                        <!-- <p class="filter-label">Min Price: <span id="minPrice">$0</span></p> -->
+
+
+
+                    </div>
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="row productouterdiv gy-4"></div>
+                </div>
+            </div>
+
+            <div class="row mx-auto text-center py-4">
+                <div class="col-lg-12 text-center pagg">
+                    <ul class="pagination text-center justify-content-center" id="pagination"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-dark text-light py-3">
+        <div class="container text-center">
+            <p>&copy; 2023 Online Store. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    var storediv = document.querySelector(".productouterdiv");
+    var paggnitaon = document.querySelector("#pagination");
+    var storcat = document.querySelector(".catsectiono");
+    var pricerange = document.querySelector("#priceRange");
+    var minprice = document.querySelector("#minPrice");
+    var maxprice = document.querySelector("#maxPrice");
+    var selectbox = document.querySelector("#selct");
+    var categorystorearray = [];
+    var maxvalue;
+    var minvalue;
+    var globalSkipValue = 0;
+
+    var pagginationfunction = () => {
+        var url = `https://dummyjson.com/products`;
+        fetch(url).then((v) => v.json()).then((v) => {
+            var total = v.total;
+            var limit = 30;
+            var conditionn = total / limit;
+            for (var i = 1; i <= conditionn; i++) {
+                var into10 = Math.ceil((i - 1) * 10);
+                paggnitaon.innerHTML += `<li class="page-item" onclick="globalSkipValue = ${into10}; productdisplay();"><a class="page-link" href="#">${i}</a></li>`;
+            }
+        });
+    };
+    pagginationfunction();
+
+    var productdisplay = (checkbox = [], price = "", Ratting = "") => {
+        categorystorearray = [];
+
+        var url = `https://dummyjson.com/products?limit=30&skip=${globalSkipValue}`;
+        fetch(url).then((v) => v.json()).then((v) => {
+            var products = v.products;
+            storediv.innerHTML = "";
+            var maxvalue = products[0].price;
+            var minvalue = products[0].price;
+            products.forEach(element => {
+                if (maxvalue < element.price) {
+                    maxvalue = element.price;
+                }
+                if (minvalue > element.price) {
+                    minvalue = element.price;
+                }
+
+                if (checkbox.length == 0) {
+                    if (!categorystorearray.includes(element.category)) {
+                        categorystorearray.push(element.category);
+                        storcat.innerHTML = "";
+                        categorystorearray.forEach((category) => {
+                            storcat.innerHTML += `
+                                <div class="category-checkbox">
+                                    <input type="checkbox" value="${category}" id="category_${category}" onclick="checkboxcheking()">
+                                    <label for="category_${category}">${category}</label>
+                               </div>`;
+                        });
+                    }
+                }
+                if ((checkbox.includes(element.category) || checkbox.length == 0) && (price == '' || element.price <= Number(price)) && (Ratting == '' || Math.floor(element.rating) == Ratting)) {
+                    storediv.innerHTML += `
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <img src="${element.thumbnail}" onclick="oneproduct(${element.id})" data-bs-toggle="modal" data-bs-target="#exampleModal" style="width: 100%;" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <p class="card-title">${element.title}</p>
+                                <p class="card-title">$ ${element.price} <span class="ms-4"></span> <span class="ms-5 ps-3"> <i class="fa-solid fa-star"></i>${element.rating}</span></p>
+                                <a href="#" class="btn btn-warning " ">Add to cart</a>
+                                <a href="#" class="btn btn-primary ms-4">buy now</a>
+                            </div>
+                        </div>
+                    </div> `;
+                }
+                pricerange.min = minvalue;
+                pricerange.max = maxvalue;
+                if (price == "") {
+                    pricerange.value = maxvalue;
+                }
+                if (!price == "") {
+                    pricerange.value = price;
+                }
+                // minprice.innerHTML = minvalue + "Rs.";
+                if (price == "") {
+                    change.innerHTML = minvalue + "Rs.";
+                }
+                maxprice.innerHTML = maxvalue + "Rs.";
+            });
+        });
+    };
+    productdisplay();
+
+
+    var currentratint = selectbox.value;
+    console.log(currentratint)
+
+
+    // checkboxcheking function start
+    function checkboxcheking() {
+        var allcheckboxtarget = document.querySelectorAll(".catsectiono input[type=checkbox]:checked");
+        var selectedCategories = Array.from(allcheckboxtarget).map((check) => check.value);
+        var pricevalue = pricerange.value;
+        productdisplay(selectedCategories, pricevalue);
+    }
+
+    // price function start
+
+    pricerange.addEventListener("change", () => {
+        pricevalue = pricerange.value;
+        change.innerHTML = pricevalue + "Rs.";
+        var allcheckboxtarget = document.querySelectorAll(".catsectiono input[type=checkbox]:checked");
+        var selectedCategories = Array.from(allcheckboxtarget).map((check) => check.value);
+        if (selectedCategories.length == 0) {
+            activecheck = categorystorearray;
+            productdisplay(selectedCategories, pricevalue);
+        }
+        productdisplay(selectedCategories, pricevalue);
+    });
+    // price function end
+
+
+    // Ratting function start
+
+    var selectedRating;
+    selectbox.addEventListener("change", (e) => {
+        selectedRating = e.target.value;
+        var allcheckboxtarget = document.querySelectorAll(".catsectiono input[type=checkbox]:checked");
+        var selectedCategories = Array.from(allcheckboxtarget).map((check) => check.value);
+
+        if (selectedCategories.length == 0) {
+            activecheck = categorystorearray;
+        }
+        productdisplay(selectedCategories, pricerange.value, selectedRating);
+
+    });
+
+    // oneproductdata show function
+    var oneproduct = async (id) => {
+        console.log(id);
+        bodymod.innerHTML = "";
+        var dstore;
+        var oneul = `https://dummyjson.com/products/${id}`;
+        var getd = await fetch(oneul);
+        var oneporductdata = await getd.json();
+        dstore = `
+        <div class="row">
+    <div class="col-lg-6">
+        <img src="${oneporductdata.thumbnail}" id="thubnail" class="img-fluid" alt="">
+    </div>
+    <div class="col-lg-6">
+        <h4 class="card-title">${oneporductdata.title}</h4>
+        <p class="card-text">${oneporductdata.description}</p>
+        <p class "card-text">Price: ${oneporductdata.price}</p>
+
+        <div class="d-flex">
+            <a href="#" class="btn btn-warning me-2 id="cartbtn"" onclick="localstoragesave(${oneporductdata.id})">Add to Cart</a>
+            <a href="#" class="btn btn-primary">Buy Now</a>
+        </div>
+
+        <div class="mt-3">
+            <p>Rating: ${oneporductdata.rating}<i class="fas fa-star text-warning"></i> <i
+                    class="fas fa-star text-warning"></i> <i class="fas fa-star text-warning"></i> <i
+                    class="fas fa-star text-warning"></i> <i class="far fa-star"></i></p>
+            <p>Availability: In Stock</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col img4"> <img src="${oneporductdata.images[0]}" onclick="phatourl(this.src)" class="img-fluid"
+                alt="not available"></div>
+        <div class="col img4"> <img src="${oneporductdata.images[1]}" onclick="phatourl(this.src)" class="img-fluid"
+                alt="not available"></div>
+        <div class="col img4"> <img src="${oneporductdata.images[2]}" onclick="phatourl(this.src)" class="img-fluid"
+                alt="not available"> </div>
+        <div class="col img4"> <img src="${oneporductdata.images[3]}" onclick="phatourl(this.src)" class="img-fluid"
+                alt="not available"> </div>
+    </div>
+</div>`;
+        bodymod.innerHTML = dstore;
+    }
+
+    function phatourl(geturl) {
+        thubnail.src = geturl;
+    }
+
+    function localstoragesave(id) {
+        var localget = JSON.parse(localStorage.getItem("getid")) ?? [];
+        if (!localget.includes(id)) {
+            localget.push(id);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Added to Cart',
+                text: 'The product has been added to your cart!',
+            });
+        }
+        else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Already Added',
+                text: 'This product is already in your cart.',
+            });
+        }
+
+        var set = localStorage.setItem("getid", JSON.stringify(localget));
+    }
+
+</script>
+
+</html>
